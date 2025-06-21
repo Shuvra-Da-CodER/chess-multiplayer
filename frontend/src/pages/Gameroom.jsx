@@ -15,6 +15,8 @@ export default function GameRoom() {
   const [gameComment, setGameComment] = useState("");
   const [winnerMessage, setWinnerMessage] = useState("");
   const [isGameOver, setIsGameOver] = useState(false);
+  const [opponentDisconnected, setOpponentDisconnected] = useState(false);
+  const [disconnectionMessage, setDisconnectionMessage] = useState("");
   const { roomID } = useParams();
   const [params] = useSearchParams();
   const playerColor = params.get("color");
@@ -106,6 +108,8 @@ export default function GameRoom() {
       setWinnerMessage("");
       setGameComment("");
       setIsGameOver(false);
+      setOpponentDisconnected(false);
+      setDisconnectionMessage("");
     };
 
     const handleGameState = (fen) => {
@@ -121,6 +125,12 @@ export default function GameRoom() {
       setWinnerMessage(`${color} gave up. ${winner} wins!`);
       setIsGameOver(true);
     };
+
+    const handleOpponentDisconnected = (disconnectedPlayer) => {
+      setOpponentDisconnected(true);
+      setDisconnectionMessage(`${disconnectedPlayer} has disconnected from the game.`);
+      setIsGameOver(true);
+    };
     
   socket.on("receiveMessage", ({ sender, message, timestamp }) => {
     // Make sure not to add the sender's own message again
@@ -133,12 +143,14 @@ export default function GameRoom() {
     socket.on("move", handleMove);
     socket.on("opponentGaveUp", handleGiveUp);
     socket.on("rematchStarted", handleRematch);
+    socket.on("opponentDisconnected", handleOpponentDisconnected);
 
     return () => {
       socket.off("gameState", handleGameState);
       socket.off("move", handleMove);
       socket.off("opponentGaveUp", handleGiveUp);
       socket.off("rematchStarted", handleRematch);
+      socket.off("opponentDisconnected", handleOpponentDisconnected);
       socket.off("receiveMessage");
     };
   }, [roomID, playerColor]); // ✅ Add playerColor as dependency
@@ -170,6 +182,12 @@ export default function GameRoom() {
       </div>
       <div className="game-info">
         {winnerMessage && <div className="winner-message">{winnerMessage}</div>}
+        {disconnectionMessage && (
+          <div className="disconnection-message">
+            <span className="disconnection-icon">⚠️</span>
+            {disconnectionMessage}
+          </div>
+        )}
         {gameComment && <div className="game-comment">{gameComment}</div>}
         <div className="action-buttons">
           <button className="btn" disabled={isGameOver} onClick={handleGiveUp}>
@@ -183,14 +201,33 @@ export default function GameRoom() {
         </div>
       </div>
       <div className="chat-container">
-        <div className="chat-header">Chat</div>
+        <div className="chat-header">
+          <span className="chat-title">💬 Game Chat</span>
+          <div className="chat-status">
+            {opponentDisconnected ? (
+              <span className="status-disconnected">Opponent Disconnected</span>
+            ) : (
+              <span className="status-connected">Connected</span>
+            )}
+          </div>
+        </div>
         <div className="chat-messages" ref={chatMessagesRef}>
-          {chatMessages.map((msg, i) => (
-            <div key={i} className="chat-message">
-              <div className="chat-sender">{msg.sender}</div>
-              <div className="chat-text">{msg.message}</div>
+          {chatMessages.length === 0 ? (
+            <div className="chat-empty">
+              <p>No messages yet</p>
+              <p>Start the conversation!</p>
             </div>
-          ))}
+          ) : (
+            chatMessages.map((msg, i) => (
+              <div key={i} className={`chat-message ${msg.sender === playerColor ? 'own-message' : 'opponent-message'}`}>
+                <div className="chat-sender">{msg.sender}</div>
+                <div className="chat-text">{msg.message}</div>
+                <div className="chat-timestamp">
+                  {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </div>
+              </div>
+            ))
+          )}
         </div>
         <div className="chat-input-container">
           <input
@@ -200,8 +237,13 @@ export default function GameRoom() {
             onChange={(e) => setChatInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendChatMessage()}
             placeholder="Type a message..."
+            disabled={opponentDisconnected}
           />
-          <button className="chat-send-btn" onClick={sendChatMessage}>
+          <button 
+            className="chat-send-btn" 
+            onClick={sendChatMessage}
+            disabled={opponentDisconnected || !chatInput.trim()}
+          >
             Send
           </button>
         </div>
