@@ -1,0 +1,219 @@
+.gameroom-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  box-sizing: border-box;
+  isolation: isolate;
+}
+
+.gameroom-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('../assets/gameroom_background.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1);
+  z-index: -1;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #4ade80;
+  margin-bottom: 2rem;
+}
+
+.chessboard-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+.turn-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.turn-icon {
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+
+.turn-icon.active {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 10px rgba(74, 222, 128, 0.7));
+}
+
+.turn-icon.inactive {
+  opacity: 0.4;
+  transform: scale(0.9);
+}
+
+.game-info {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.winner-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgba(74, 222, 128, 0.1);
+  color: #4ade80;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.game-comment {
+  margin-top: 0.5rem;
+  font-weight: bold;
+  color: #94a3b8;
+}
+
+.action-buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn {
+  background-color: #4ade80;
+  color: #0a0a0a;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 1rem;
+}
+
+.btn:hover {
+  background-color: #36b36a;
+}
+
+.btn:disabled {
+  background-color: #1e293b;
+  color: #475569;
+  cursor: not-allowed;
+}
+
+.rematch-btn {
+  background-color: transparent;
+  color: #4ade80;
+  border: 1px solid #4ade80;
+}
+
+.rematch-btn:hover {
+  background-color: rgba(74, 222, 128, 0.1);
+}
+
+.chat-container {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  background-color: #1e293b;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+}
+
+.chat-header {
+  padding: 1rem;
+  background-color: #334155;
+  border-radius: 0.75rem 0.75rem 0 0;
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.chat-messages {
+  height: 300px;
+  overflow-y: auto;
+  padding: 1rem;
+  background-color: #1e293b;
+}
+
+.chat-message {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background-color: #334155;
+  border-radius: 0.5rem;
+  color: #e2e8f0;
+}
+
+.chat-sender {
+  font-weight: 600;
+  color: #4ade80;
+  margin-bottom: 0.25rem;
+}
+
+.chat-text {
+  color: #cbd5e1;
+}
+
+.chat-input-container {
+  padding: 1rem;
+  background-color: #1e293b;
+  border-radius: 0 0 0.75rem 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 0.5rem;
+  background-color: #334155;
+  border: 1px solid #475569;
+  border-radius: 0.375rem;
+  color: #e2e8f0;
+  font-size: 0.875rem;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: #4ade80;
+}
+
+.chat-send-btn {
+  padding: 0.5rem 1rem;
+  background-color: #4ade80;
+  color: #0a0a0a;
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.875rem;
+}
+
+.chat-send-btn:hover {
+  background-color: #36b36a;
+}
+
+@media (max-width: 1200px) {
+  .chat-container {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 2rem;
+  }
+} 

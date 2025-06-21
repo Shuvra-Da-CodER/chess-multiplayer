@@ -62,6 +62,14 @@ io.on("connection", (socket) => {
     delete gameStates[roomID];
   });
 
+  socket.on("sendMessage", ({ roomID, sender, message }) => {
+    io.to(roomID).emit("receiveMessage", {
+      sender,
+      message,
+      timestamp: new Date().toISOString(),
+    });
+  });
+  
   socket.on("rematch", (roomID) => {
     // Clear old game state
     delete gameStates[roomID];

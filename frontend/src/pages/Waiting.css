@@ -1,0 +1,98 @@
+.waiting-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.waiting-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #4ade80;
+  margin-bottom: 1rem;
+}
+
+.room-info {
+  font-size: 1.25rem;
+  color: #94a3b8;
+  margin-bottom: 2rem;
+}
+
+.chess-pieces {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  margin-bottom: 3rem;
+}
+
+.piece-icon {
+  width: 120px;
+  height: 120px;
+  filter: drop-shadow(0 0 15px rgba(74, 222, 128, 0.4));
+  animation: float 3s ease-in-out infinite;
+}
+
+.piece-icon:nth-child(2) {
+  animation-delay: 1.5s;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.room-id {
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.player-color {
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.waiting-message {
+  font-size: 1.1rem;
+  color: #94a3b8;
+  margin-bottom: 2rem;
+}
+
+.start-button {
+  background-color: #4ade80;
+  color: #0a0a0a;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 1.25rem;
+  animation: pulse 2s infinite;
+}
+
+.start-button:hover {
+  background-color: #36b36a;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+} 
