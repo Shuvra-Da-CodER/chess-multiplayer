@@ -6,7 +6,6 @@ const { randomUUID } = require("crypto");
 
 const app = express();
 const server = http.createServer(app);
-const cors = require("cors");
 
 app.use(cors({
   origin: "https://chess-frontend-se5i.onrender.com", 
