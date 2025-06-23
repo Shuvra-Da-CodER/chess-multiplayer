@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "react": "^18.3.1",
+    "react-chessboard": "^4.7.3",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.6.2",
     "serve": "^14.2.4"
